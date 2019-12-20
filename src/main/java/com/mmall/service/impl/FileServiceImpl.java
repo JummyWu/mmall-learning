@@ -22,11 +22,11 @@ public class FileServiceImpl implements IFileService {
     private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
 
-    public String upload(MultipartFile file, String path){
+    public String upload(MultipartFile file, String path) {
         String fileName = file.getOriginalFilename();
-        String fileExtensioName = fileName.substring(fileName.lastIndexOf(".")+1);
-        String uploadFileName = UUID.randomUUID().toString()+"."+fileExtensioName;
-        logger.info("开始上传文件,文件的文件名:{},上传的路径:{},新文件名:{}",fileName, path, uploadFileName);
+        String fileExtensioName = fileName.substring(fileName.lastIndexOf(".") + 1);
+        String uploadFileName = UUID.randomUUID().toString() + "." + fileExtensioName;
+        logger.info("开始上传文件,文件的文件名:{},上传的路径:{},新文件名:{}", fileName, path, uploadFileName);
 
         File fileDir = new File(path);
         if (!fileDir.exists()) {
@@ -45,7 +45,7 @@ public class FileServiceImpl implements IFileService {
             targetFile.delete();
 
         } catch (IOException e) {
-            logger.error("上传文件异常",e);
+            logger.error("上传文件异常", e);
             return null;
         }
 

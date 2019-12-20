@@ -38,7 +38,7 @@ public class CartServiceImpl implements ICartService {
 
     public ServerResponse<CartVo> add(Integer userId, Integer productId, Integer count) {
         if (productId == null || count == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Cart cart = cartMapper.selectCarByUserIdProductId(userId, productId);
         if (cart == null) {
@@ -61,7 +61,7 @@ public class CartServiceImpl implements ICartService {
 
     public ServerResponse<CartVo> update(Integer userId, Integer productId, Integer count) {
         if (productId == null || count == null) {
-            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(),ResponseCode.ILLEGAL_ARGUMENT.getDesc());
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Cart cart = cartMapper.selectCarByUserIdProductId(userId, productId);
         if (cart != null) {
@@ -86,7 +86,7 @@ public class CartServiceImpl implements ICartService {
     }
 
     public ServerResponse<CartVo> selectOrUnSerlectAll(Integer userId, Integer productId, Integer checked) {
-        cartMapper.checkedOrUncheckProduct(userId,productId, checked);
+        cartMapper.checkedOrUncheckProduct(userId, productId, checked);
         return this.list(userId);
     }
 
@@ -150,7 +150,7 @@ public class CartServiceImpl implements ICartService {
         return cartVo;
     }
 
-    private boolean getAllCheckedStatus(Integer userId){
+    private boolean getAllCheckedStatus(Integer userId) {
         //是不是全选
         if (userId == null) {
             return false;

@@ -17,11 +17,11 @@ public class FTPUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
 
-    private static  String ftpIp = PropertiesUtil.getProperty("ftp.server.ip");
-    private static  String ftpUser = PropertiesUtil.getProperty("ftp.user");
-    private static  String ftpPass = PropertiesUtil.getProperty("ftp.pass");
+    private static String ftpIp = PropertiesUtil.getProperty("ftp.server.ip");
+    private static String ftpUser = PropertiesUtil.getProperty("ftp.user");
+    private static String ftpPass = PropertiesUtil.getProperty("ftp.pass");
 
-    public FTPUtil(String ip,int port, String user, String pwd) {
+    public FTPUtil(String ip, int port, String user, String pwd) {
         this.ip = ip;
         this.port = port;
         this.user = user;
@@ -52,7 +52,7 @@ public class FTPUtil {
                     ftpClient.storeFile(fileItem.getName(), fis);
                 }
             } catch (IOException e) {
-                logger.error("上传文件异常",e);
+                logger.error("上传文件异常", e);
                 uploaded = false;
                 e.printStackTrace();
             } finally {
@@ -63,7 +63,7 @@ public class FTPUtil {
         return uploaded;
     }
 
-    private boolean connectServer(String ip, int port, String user,String pwd){
+    private boolean connectServer(String ip, int port, String user, String pwd) {
         boolean isSuccess = false;
         ftpClient = new FTPClient();
         try {

@@ -23,20 +23,20 @@ public class TokenCache {
                 }
             });
 
-    public static void setKey(String key, String value){
+    public static void setKey(String key, String value) {
         localCache.put(key, value);
     }
 
-    public static String getkey(String key){
+    public static String getkey(String key) {
         String value = null;
         try {
             value = localCache.get(key);
-            if ("null".equals(value)){
+            if ("null".equals(value)) {
                 return null;
             }
             return value;
-        }catch (Exception e){
-            logger.error("localCache get error",e);
+        } catch (Exception e) {
+            logger.error("localCache get error", e);
         }
         return null;
     }

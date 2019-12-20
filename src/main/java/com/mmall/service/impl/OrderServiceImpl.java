@@ -79,7 +79,7 @@ public class OrderServiceImpl implements IOrderService {
         if (!serverResponse.isSuccess()) {
             return serverResponse;
         }
-        List<OrderItem> orderItemList = (List<OrderItem>)serverResponse.getData();
+        List<OrderItem> orderItemList = (List<OrderItem>) serverResponse.getData();
         BigDecimal payment = this.getOrderTotalPrice(orderItemList);
 
         //生成订单
@@ -104,12 +104,12 @@ public class OrderServiceImpl implements IOrderService {
 
         //返回给前端
 
-        OrderVo orderVo =assembleOrderVO(order, orderItemList);
+        OrderVo orderVo = assembleOrderVO(order, orderItemList);
         return ServerResponse.createBySuccess(orderVo);
     }
 
     private OrderVo assembleOrderVO(Order order, List<OrderItem> orderItemList) {
-        OrderVo  orderVo = new OrderVo();
+        OrderVo orderVo = new OrderVo();
         orderVo.setOrderNo(order.getOrderNo());
         orderVo.setPayment(order.getPayment());
         orderVo.setPaymentType(order.getPaymentType());
@@ -170,7 +170,7 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     private void cleanCart(List<Cart> cartList) {
-        for (Cart cart: cartList) {
+        for (Cart cart : cartList) {
             cartMapper.deleteByPrimaryKey(cart.getId());
         }
     }
@@ -205,15 +205,15 @@ public class OrderServiceImpl implements IOrderService {
 
         //订单号生成
         long currentTime = System.currentTimeMillis();
-        return currentTime+new Random().nextInt(100);
+        return currentTime + new Random().nextInt(100);
     }
 
-    private BigDecimal getOrderTotalPrice(List<OrderItem> orderItemList){
+    private BigDecimal getOrderTotalPrice(List<OrderItem> orderItemList) {
         BigDecimal payment = new BigDecimal("0");
-         for (OrderItem orderItem : orderItemList) {
-             payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
-         }
-         return payment;
+        for (OrderItem orderItem : orderItemList) {
+            payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
+        }
+        return payment;
     }
 
     private ServerResponse getCartOrderItem(Integer userId, List<Cart> cartList) {
@@ -223,16 +223,16 @@ public class OrderServiceImpl implements IOrderService {
         }
 
         //效验购物车的数据，包括产品的状态和数量
-        for (Cart cartItem: cartList) {
+        for (Cart cartItem : cartList) {
             OrderItem orderItem = new OrderItem();
             Product product = productMapper.selectByPrimaryKey(cartItem.getProductId());
             if (Const.ProductStatusEnum.ON_SALE.getCode() != product.getStatus()) {
-                return ServerResponse.createByErrorMessage("产品"+product.getName()+"不是在线售价状态");
+                return ServerResponse.createByErrorMessage("产品" + product.getName() + "不是在线售价状态");
             }
 
             //效验库存
             if (cartItem.getQuantity() > product.getStock()) {
-                return ServerResponse.createByErrorMessage("产品"+product.getName()+"库存不足");
+                return ServerResponse.createByErrorMessage("产品" + product.getName() + "库存不足");
             }
 
             orderItem.setUserId(userId);
@@ -266,7 +266,7 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createByError();
     }
 
-    public ServerResponse getOrderCartProduct(Integer userId){
+    public ServerResponse getOrderCartProduct(Integer userId) {
         OrderProductVo orderProductVo = new OrderProductVo();
         List<Cart> cartList = cartMapper.selectCheckCartByUserId(userId);
         ServerResponse serverResponse = this.getCartOrderItem(userId, cartList);
@@ -277,7 +277,7 @@ public class OrderServiceImpl implements IOrderService {
         List<OrderItemVo> orderItemVoList = Lists.newArrayList();
 
         BigDecimal payment = new BigDecimal("0");
-        for (OrderItem orderItem: orderItemList) {
+        for (OrderItem orderItem : orderItemList) {
             payment = BigDecimalUtil.add(payment.doubleValue(), orderItem.getTotalPrice().doubleValue());
             orderItemVoList.add(assembleOrderItemVo(orderItem));
         }
@@ -308,7 +308,7 @@ public class OrderServiceImpl implements IOrderService {
 
     private List<OrderVo> assembleOrderVoList(List<Order> orderList, Integer userId) {
         List<OrderVo> orderVoList = Lists.newArrayList();
-        for (Order order: orderList) {
+        for (Order order : orderList) {
             List<OrderItem> orderItemList = Lists.newArrayList();
             if (userId == null) {
                 // todo 管理员查询的时候，不需要传userId
@@ -369,7 +369,7 @@ public class OrderServiceImpl implements IOrderService {
         List<GoodsDetail> goodsDetailList = new ArrayList<GoodsDetail>();
 
         List<OrderItem> orderItemList = orderItemMapper.getByOrderNoUserId(orderNo, userId);
-        for (OrderItem orderItem : orderItemList){
+        for (OrderItem orderItem : orderItemList) {
             GoodsDetail goods = GoodsDetail.newInstance(orderItem.getProductId().toString(), orderItem.getProductName(),
                     BigDecimalUtil.mul(orderItem.getCurrentUnitPrice().doubleValue(), new Double(100).doubleValue()).longValue(),
                     orderItem.getQuantity());
@@ -410,7 +410,7 @@ public class OrderServiceImpl implements IOrderService {
                 }
 
                 // 需要修改为运行机器上的路径
-                String qrPath = String.format(path+"/qr-%s.png", response.getOutTradeNo());
+                String qrPath = String.format(path + "/qr-%s.png", response.getOutTradeNo());
                 String qrFileName = String.format("qr-%s.png", response.getOutTradeNo());
                 ZxingUtils.getQRCodeImge(response.getQrCode(), 256, qrPath);
 
@@ -418,15 +418,15 @@ public class OrderServiceImpl implements IOrderService {
                 try {
                     FTPUtil.uploadFile(Lists.newArrayList(targetFile));
                 } catch (IOException e) {
-                    logger.error("上传二维码异常",e);
+                    logger.error("上传二维码异常", e);
                 }
 
                 logger.info("filePath:" + qrPath);
-                String qrUrl = PropertiesUtil.getProperty("alipay.callback.url")+targetFile.getName();
+                String qrUrl = PropertiesUtil.getProperty("alipay.callback.url") + targetFile.getName();
                 resultMap.put("qrUrl", qrUrl);
                 return ServerResponse.createBySuccess(resultMap);
 
-                //                ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
+            //                ZxingUtils.getQRCodeImge(response.getQrCode(), 256, filePath);
 
             case FAILED:
                 logger.error("支付宝预下单失败!!!");

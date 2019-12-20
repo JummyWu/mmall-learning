@@ -28,15 +28,16 @@ public class ShippingController {
 
     /**
      * 添加地址
+     *
      * @param session
      * @param shipping
      * @return
      */
     @RequestMapping("add.do")
     @ResponseBody
-    public ServerResponse add(HttpSession session, Shipping shipping){
+    public ServerResponse add(HttpSession session, Shipping shipping) {
 
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -45,15 +46,16 @@ public class ShippingController {
 
     /**
      * 删除地址
+     *
      * @param session
      * @param shippingId
      * @return
      */
     @RequestMapping("del.do")
     @ResponseBody
-    public ServerResponse del(HttpSession session, Integer shippingId){
+    public ServerResponse del(HttpSession session, Integer shippingId) {
 
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -62,15 +64,16 @@ public class ShippingController {
 
     /**
      * 更新地址
+     *
      * @param session
      * @param shipping
      * @return
      */
     @RequestMapping("update.do")
     @ResponseBody
-    public ServerResponse update(HttpSession session, Shipping shipping){
+    public ServerResponse update(HttpSession session, Shipping shipping) {
 
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -79,15 +82,16 @@ public class ShippingController {
 
     /**
      * 查询地址
+     *
      * @param session
      * @param shippingId
      * @return
      */
     @RequestMapping("select.do")
     @ResponseBody
-    public ServerResponse<Shipping> select(HttpSession session, Integer shippingId){
+    public ServerResponse<Shipping> select(HttpSession session, Integer shippingId) {
 
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
@@ -96,6 +100,7 @@ public class ShippingController {
 
     /**
      * 分页
+     *
      * @param pageNum
      * @param pageSize
      * @param session
@@ -107,7 +112,7 @@ public class ShippingController {
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                          HttpSession session) {
 
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), ResponseCode.NEED_LOGIN.getDesc());
         }
